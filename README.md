@@ -16,7 +16,7 @@
 
 1. 在青龙面板中添加以下订阅：
 ```
-ql repo https://github.com/YOUR_REPOSITORY/4ksj.git "4ksj" "" "sendNotify"
+ql repo https://github.com/mahaoxiong/4ksj.git "4ksj" "" "sendNotify"
 ```
 
 ### 2. 获取Cookie
