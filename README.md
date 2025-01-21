@@ -21,28 +21,23 @@ ql repo https://github.com/YOUR_REPOSITORY/4ksj.git "4ksj" "" "sendNotify"
 
 ### 2. 安装依赖
 
-方法一：通过青龙面板命令行安装（推荐）
-
-1. 进入青龙面板的"命令行"功能
-2. 依次执行以下命令：
-```bash
-cd /ql/data/scripts/mahaoxiong_4ksj
-npm init -y
-npm install axios@0.26.0 cheerio@1.0.0-rc.10 iconv-lite@0.6.3 qs@6.10.3
-```
-
-方法二：通过青龙面板依赖管理安装
+在青龙面板中安装依赖：
 
 1. 进入青龙面板的"依赖管理"
 2. 切换到"NodeJs"选项卡
 3. 点击"添加依赖"按钮
-4. 分别添加以下依赖（注意版本号）：
+4. 分别添加以下依赖（必须严格按照版本号安装）：
 ```
 axios@0.26.0
 cheerio@1.0.0-rc.10
 iconv-lite@0.6.3
 qs@6.10.3
 ```
+
+注意：
+- 每个依赖都需要单独添加
+- 必须包含版本号，确保版本一致
+- 添加完成后，点击"确定"保存
 
 ### 3. 获取Cookie
 
@@ -90,9 +85,9 @@ https://chromewebstore.google.com/detail/header-cookie-qrcode-case/echlhpliefhch
    - 出错时会通过推送通知发送错误信息
 
 4. 依赖问题：
-   - 如果遇到模块找不到的错误，请尝试重新安装依赖
-   - 建议使用命令行方式安装依赖，更加可靠
-   - 如果依赖安装失败，可以尝试清除node_modules目录后重新安装
+   - 如果遇到模块找不到的错误，请检查依赖是否都已正确安装
+   - 可以尝试删除依赖后重新安装
+   - 确保安装时使用了正确的版本号
 
 ## 更新日志
 

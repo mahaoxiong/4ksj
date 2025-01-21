@@ -1,90 +1,43 @@
 const axios = require('axios');
 const qs = require('qs');
 
-// Push Plus
-async function pushPlusNotify(text, desp) {
-    if (!process.env.PPTOKEN) return;
-    try {
-        const url = 'http://www.pushplus.plus/send';
-        const data = {
-            token: process.env.PPTOKEN,
-            title: text,
-            content: desp
-        };
-        await axios.post(url, data);
-    } catch (error) {
-        console.log('Push Plus发送通知调用API失败！', error);
-    }
+// 通知环境变量
+let QYWX_AM = '';
+let QYWX_KEY = '';
+let DD_BOT_TOKEN = '';
+let DD_BOT_SECRET = '';
+let BARK_PUSH = '';
+let BARK_SOUND = '';
+let BARK_GROUP = '';
+let TG_BOT_TOKEN = '';
+let TG_USER_ID = '';
+let TG_PROXY_HOST = '';
+let TG_PROXY_PORT = '';
+let TG_PROXY_AUTH = '';
+let TG_API_HOST = 'api.telegram.org';
+let PUSH_KEY = '';
+let PUSH_PLUS_TOKEN = '';
+let PUSH_PLUS_USER = '';
+let IGOT_PUSH_KEY = '';
+let GOBOT_URL = '';
+let GOBOT_QQ = '';
+let GOBOT_TOKEN = '';
+
+// 导入青龙通知
+let notify;
+try {
+    notify = require('/ql/data/scripts/sendNotify.js');
+} catch (err) {
+    notify = require('./sendNotify.js');
 }
 
-// PushDeer
-async function pushDeerNotify(text, desp) {
-    if (!process.env.PDKEY) return;
-    try {
-        const url = 'https://api2.pushdeer.com/message/push';
-        const data = {
-            pushkey: process.env.PDKEY,
-            text: text,
-            desp: desp,
-            type: 'text'
-        };
-        await axios.post(url, data);
-    } catch (error) {
-        console.log('PushDeer发送通知调用API失败！', error);
-    }
-}
-
-// Server酱
-async function serverJNotify(text, desp) {
-    if (!process.env.SCKEY) return;
-    try {
-        const url = `https://sctapi.ftqq.com/${process.env.SCKEY}.send`;
-        const data = {
-            text: text,
-            desp: desp
-        };
-        await axios.post(url, qs.stringify(data));
-    } catch (error) {
-        console.log('Server酱发送通知调用API失败！', error);
-    }
-}
-
-// Bark
-async function barkNotify(text, desp) {
-    if (!process.env.BARKKEY) return;
-    try {
-        const barkServer = process.env.BARKSERVER || 'https://api.day.app';
-        const url = `${barkServer}/${process.env.BARKKEY}/${encodeURIComponent(text)}/${encodeURIComponent(desp)}`;
-        await axios.get(url);
-    } catch (error) {
-        console.log('Bark发送通知调用API失败！', error);
-    }
-}
-
-// Telegram
-async function telegramNotify(text, desp) {
-    if (!process.env.TELEGRAM_TOKEN || !process.env.TELEGRAM_ID) return;
-    try {
-        const url = `https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`;
-        const data = {
-            chat_id: process.env.TELEGRAM_ID,
-            text: `${text}\n\n${desp}`,
-            parse_mode: 'HTML'
-        };
-        await axios.post(url, data);
-    } catch (error) {
-        console.log('Telegram发送通知调用API失败！', error);
-    }
-}
-
+// 发送通知
 async function sendNotify(text, desp) {
-    await Promise.all([
-        pushPlusNotify(text, desp),
-        pushDeerNotify(text, desp),
-        serverJNotify(text, desp),
-        barkNotify(text, desp),
-        telegramNotify(text, desp)
-    ]);
+    try {
+        await notify.sendNotify(text, desp);
+    } catch (err) {
+        console.log('发送通知失败：', err);
+    }
 }
 
 module.exports = {

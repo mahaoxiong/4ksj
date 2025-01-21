@@ -2,6 +2,7 @@
 // 定时任务：0 0,6 * * *
 
 const $ = new Env('4ksj签到');
+// 使用青龙的通知
 const notify = $.isNode() ? require('./sendNotify') : '';
 
 // 配置参数
@@ -128,16 +129,17 @@ async function getCheckinInfoSJ(host) {
 
 // 推送消息
 async function pushNotice(status, message) {
+    console.log(status, message);
     if ($.isNode()) {
         await notify.sendNotify($.name, `${status}\n${message}`);
     }
-    $.msg($.name, status, message);
 }
 
 // 主函数
 async function start() {
     if (!sjCookie) {
-        $.msg($.name, '❌错误', '请先获取Cookie!');
+        console.log('未设置cookie，请先获取cookie！');
+        await pushNotice('❌错误', '请先获取Cookie!');
         return;
     }
 
@@ -147,7 +149,6 @@ async function start() {
     let status = sj.name + ": " + (sj.status ? "签到成功！" : "签到失败！");
     let message = "* " + sj.name + ": " + sj.message;
     
-    console.log(status, message);
     await pushNotice(status, message);
 }
 
@@ -155,12 +156,16 @@ async function start() {
 !(async () => {
     if (!sjCookie) {
         console.log('未设置cookie，请先获取cookie！');
+        await pushNotice('❌错误', '请先获取Cookie!');
         return;
     }
     console.log('开始执行签到任务...');
     await start();
 })()
-    .catch((e) => $.logErr(e))
+    .catch((e) => {
+        $.logErr(e);
+        pushNotice('❌错误', '脚本执行异常：' + e.message);
+    })
     .finally(() => $.done());
 
 // 青龙面板环境变量类
