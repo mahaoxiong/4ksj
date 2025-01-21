@@ -1,98 +1,141 @@
-# 4K视界自动签到脚本 (青龙面板版)
+# 4K世界自动签到 For 青龙面板
 
 ## 功能说明
 
-1. 自动登录并签到4ksj.com
-2. 支持多种推送方式：
-   - Push Plus推送
-   - PushDeer推送
-   - Server酱推送
-   - Bark推送
-   - Telegram推送
+1. 支持4K世界网站的自动签到
+2. 支持多账号签到
+3. 使用青龙面板内置通知功能推送签到结果
 
-## 使用方法
+## 青龙面板使用教程
 
-### 1. 安装脚本
-
-1. 在青龙面板中添加以下订阅：
-```
-ql repo https://github.com/YOUR_REPOSITORY/4ksj.git "4ksj" "" "sendNotify"
+### 1. 添加脚本
+在青龙面板的"依赖管理"中添加脚本：
+```bash
+ql raw https://raw.githubusercontent.com/你的用户名/4ksj-checkin/main/app.js
 ```
 
-### 2. 安装依赖
+### 2. 依赖安装
 
-在青龙面板中安装依赖：
-
-1. 进入青龙面板的"依赖管理"
-2. 切换到"NodeJs"选项卡
-3. 点击"添加依赖"按钮
-4. 分别添加以下依赖（必须严格按照版本号安装）：
-```
-axios@0.26.0
-cheerio@1.0.0-rc.10
-iconv-lite@0.6.3
-qs@6.10.3
+在青龙面板的"依赖管理"中添加：
+```bash
+cd /ql/data/scripts/你的路径
+pnpm install axios@0.26.0 cheerio@1.0.0-rc.10 iconv-lite@0.6.3
 ```
 
-注意：
-- 每个依赖都需要单独添加
-- 必须包含版本号，确保版本一致
-- 添加完成后，点击"确定"保存
+### 3. 环境变量设置
 
-### 3. 获取Cookie
+在青龙面板"环境变量"页面添加：
 
-1. 使用Chrome浏览器安装Cookie获取插件：
-```
-https://chromewebstore.google.com/detail/header-cookie-qrcode-case/echlhpliefhchnkmiomfpdnehakfmpfl
-```
+- 单账号配置：
+  - 名称：`SJCOOKIE`
+  - 值：4K世界的Cookie
+  - 备注：登录凭证
 
-2. 登录4ksj.com后使用插件获取Cookie
-   - 勾选"cookie列表"
-   - 点击"cookie列表"
-   - 点击"copy all"复制Cookie
+- 多账号配置：
+  - 账号1：`SJCOOKIE`
+  - 账号2：`SJCOOKIE2`
+  - 账号3：`SJCOOKIE3`
+  - 以此类推...
 
-### 4. 配置环境变量
+- 可选配置：
+  - `DEBUG`：调试模式（true/false）
 
-在青龙面板中添加以下环境变量：
+### 4. 获取Cookie方法
 
-- SJCOOKIE (必填)：4K视界的Cookie
-- PPTOKEN (可选)：Push Plus的token
-- PDKEY (可选)：PushDeer的key
-- SCKEY (可选)：Server酱的SCKEY
-- BARKKEY (可选)：Bark的推送key
-- BARKSERVER (可选)：自定义Bark服务器地址
-- TELEGRAM_TOKEN (可选)：Telegram机器人的Token
-- TELEGRAM_ID (可选)：Telegram的chat ID
+推荐使用浏览器插件获取Cookie：
+1. 安装 [Header Cookie Quick Manager](https://chromewebstore.google.com/detail/header-cookie-qrcode-case/echlhpliefhchnkmiomfpdnehakfmpfl)
+2. 登录 [4K世界](https://www.4ksj.com/)
+3. 点击插件图标，勾选"cookie列表"
+4. 点击"cookie列表"，然后点击"copy all"
+5. 将复制的内容填入青龙面板的SJCOOKIE变量中
+6. 如需配置多账号，重复以上步骤，使用不同账号登录获取Cookie
 
-### 5. 配置定时任务
+### 5. 定时任务设置
 
-默认定时规则：`0 0,6 * * *`（每天0点和6点执行）
+添加定时任务：
+1. 名称：4K世界签到
+2. 命令：ql raw app.js
+3. 定时规则建议：30 0 * * *（每天0点30分执行）
 
-可以在青龙面板的定时任务中修改运行时间。
+### 6. 通知设置
 
-## 注意事项
+在青龙面板的"通知设置"中配置推送通知方式，支持多种推送渠道：
+- Bark
+- Telegram
+- 钉钉
+- 企业微信
+- Server酱
+- PushPlus
+- ...等
 
-1. Cookie有效期问题：
+## 常见问题
+
+1. Cookie失效问题：
+   - Cookie有效期通常为30天
    - 脚本会自动更新Cookie中的时间戳
-   - 如果遇到Cookie失效，需要重新获取并更新
+   - 如遇到失效请重新获取Cookie
 
-2. 推送通知：
-   - 支持多种推送方式，可以同时使用多个推送
-   - 每个推送方式都是可选的，不设置则不会推送
+2. 通知问题：
+   - 请在青龙面板的"通知设置"中配置推送渠道
+   - 可同时配置多个推送渠道
+   - DEBUG=true 可查看详细日志
 
-3. 错误处理：
-   - 脚本会自动处理各种错误情况
-   - 出错时会通过推送通知发送错误信息
+3. 多账号问题：
+   - 支持无限个账号
+   - 账号之间会自动添加延迟，避免请求过快
+   - 每个账号的签到结果会单独推送通知
 
-4. 依赖问题：
-   - 如果遇到模块找不到的错误，请检查依赖是否都已正确安装
-   - 可以尝试删除依赖后重新安装
-   - 确保安装时使用了正确的版本号
+## 更新记录
 
-## 更新日志
+- 2024/03/xx：适配青龙面板，添加多账号支持
+- 2024/01/15：修复4ksj cookie失效问题
 
-- 2024/03/xx：首次发布青龙面板版本
-- 2024/03/xx：适配青龙面板环境变量
-- 2024/03/xx：优化消息推送模块
-- 2024/03/xx：添加依赖安装说明
-- 2024/03/xx：更新依赖安装方式 
+## 声明
+
+- 本项目仅供学习交流使用
+- 使用本项目产生的一切后果由使用者自行承担
+
+# 4ksj-checkin
+
+2024/11/15 修复4ksj cookie失效
+
+#### 脚本功能：
+
+1、通过Github Action自动定时运行 app.js 脚本。
+
+2、通过cookies自动登录（[https://www.4ksj.com/](https://www.4ksj.com/))，脚本会自动进行签到。
+
+3、可以通过"推送加" （[http://www.pushplus.plus](http://www.pushplus.plus))，自动发通知到微信上。
+
+4、可以通过"PushDeer" （[http://www.pushdeer.com](http://www.pushdeer.com))，自动推送到手机上。 请使用**官方在线版**。 
+
+5、可以通过"Server酱"（[https://sct.ftqq.com/](https://sct.ftqq.com/))，自动发通知到微信上。
+
+6、可以通过"bark"（[https://github.com/Finb/Bark](https://github.com/Finb/Bark))，自动发通知到ios上。
+
+
+#### 使用教程：
+
+1. 先**"Fork"**本仓库。（不需要修改任何文件！）
+
+2. 注册或登录4ksj后获取cookies。**（简单获取方法：用下面的浏览器插件直接获取）**。
+
+### 建议提取 cookie 用该浏览器插件复制  把**cookie列表**先勾上 > 然后点击**cookie列表** > 直接点**copy all**  （自己复制的cookie会有问题！）
+
+https://chromewebstore.google.com/detail/header-cookie-qrcode-case/echlhpliefhchnkmiomfpdnehakfmpfl
+
+3. 在自己的仓库"Settings"里根据需要创建**"Secrets => Actions => New repository secret"**， （不开启通知，只需要创建一个SJCOOKIE即可）
+
+   分别添加：
+   - SJCOOKIE （**必填**； **填写4K世界的cookie**）
+   - PPTOKEN （填写推送加的token, 不开启不用填）
+   - PDKEY （填写PushDeer的key, 不开启不用填）
+   - SCKEY （填写server酱sckey，不开启server酱则不用填）
+   - BARKKEY (填写bark的key，不开启bark推送则不用填，默认使用官方服务器发送，如需自定义请通过BARKSERVER配置)
+   - BARKSERVER (填写bark的服务器地址，不开启bark推送则不用填)
+   - TELEGRAM_TOKEN（填写Telegram bot的Token）
+   - TELEGRAM_ID (填写通过访问 https://api.telegram.org/bot<TELEGRAM_TOKEN>/getUpdates 获取的chat id)
+
+4. 以上设置完毕后，每天0点和6点会自动触发，并会执行自动签到（**0点GitHub网络经常抽风**，故多增加一次执行,可自行改时间）。
+
+
