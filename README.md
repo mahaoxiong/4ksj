@@ -1,4 +1,4 @@
-# 4K视界自动签到脚本 (青龙面板版)
+# 4K视界自动签到脚本 (青龙面版)
 
 ## 功能说明
 
@@ -22,9 +22,9 @@ ql repo https://github.com/mahaoxiong/4ksj.git "4ksj" "" "sendNotify"
 ### 2. 获取Cookie
 
 1. 使用Chrome浏览器安装Cookie获取插件：
-```
+
 https://chromewebstore.google.com/detail/header-cookie-qrcode-case/echlhpliefhchnkmiomfpdnehakfmpfl
-```
+
 
 2. 登录4ksj.com后使用插件获取Cookie
    - 勾选"cookie列表"
@@ -66,6 +66,4 @@ https://chromewebstore.google.com/detail/header-cookie-qrcode-case/echlhpliefhch
 
 ## 更新日志
 
-- 2024/03/xx：首次发布青龙面板版本
-- 2024/03/xx：适配青龙面板环境变量
-- 2024/03/xx：优化消息推送模块 
+- 2025/01/21：首次发布青龙面板版本
