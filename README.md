@@ -9,7 +9,7 @@
 ## 青龙面板使用教程
 
 ### 1. 添加脚本
-在青龙面板的"依赖管理"中添加脚本：
+在青龙面板的"订阅管理"中添加脚本：
 ```bash
 ql raw https://raw.githubusercontent.com/mahaoxiong/4ksj/app.js
 ```
