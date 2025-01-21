@@ -2,8 +2,8 @@
 // 定时任务：0 0,6 * * *
 
 const $ = new Env('4ksj签到');
-// 使用青龙的通知
-const notify = $.isNode() ? require('./sendNotify') : '';
+// 使用青龙的通知模块
+const notify = require('/ql/data/scripts/sendNotify');
 
 // 配置参数
 let sjCookie = ($.isNode() ? process.env.SJCOOKIE : $.getdata('SJCOOKIE')) || "";
@@ -130,9 +130,7 @@ async function getCheckinInfoSJ(host) {
 // 推送消息
 async function pushNotice(status, message) {
     console.log(status, message);
-    if ($.isNode()) {
-        await notify.sendNotify($.name, `${status}\n${message}`);
-    }
+    await notify.sendNotify($.name, `${status}\n${message}`);
 }
 
 // 主函数
